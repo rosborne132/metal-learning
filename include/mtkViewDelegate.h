@@ -7,10 +7,10 @@
 // Internal
 #include "renderer.h"
 
-class MyMTKViewDelegate : public MTK::ViewDelegate {
+class MTKViewDelegate : public MTK::ViewDelegate {
     public:
-        MyMTKViewDelegate( MTL::Device* pDevice );
-        virtual ~MyMTKViewDelegate() override;
+        MTKViewDelegate( MTL::Device* pDevice );
+        virtual ~MTKViewDelegate() override;
         virtual void drawInMTKView( MTK::View* pView ) override;
 
     private:

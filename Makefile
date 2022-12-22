@@ -42,7 +42,7 @@ all: build/main
 
 .PHONY: all
 
-build/main: $(APP_MAIN_OBJECTS) ${RENDERER_OBJECTS} ${MTK_VIEW_DELEGATE_OBJECTS} Makefile
+build/main: $(APP_MAIN_OBJECTS) ${RENDERER_OBJECTS} ${MTK_VIEW_DELEGATE_OBJECTS} ${APP_DELEGATE_OBJECTS} Makefile
 	$(CC) $(CFLAGS) $(LDFLAGS) src/*.o -o $@
 
 clean:

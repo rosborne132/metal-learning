@@ -1,12 +1,12 @@
 // Internal
 #include "mtkViewDelegate.h"
 
-MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice ) : MTK::ViewDelegate() , _pRenderer( new Renderer( pDevice ) ) {}
+MTKViewDelegate::MTKViewDelegate( MTL::Device* pDevice ) : MTK::ViewDelegate() , _pRenderer( new Renderer( pDevice ) ) {}
 
-MyMTKViewDelegate::~MyMTKViewDelegate() {
+MTKViewDelegate::~MTKViewDelegate() {
     delete _pRenderer;
 }
 
-void MyMTKViewDelegate::drawInMTKView( MTK::View* pView ) {
+void MTKViewDelegate::drawInMTKView( MTK::View* pView ) {
     _pRenderer->draw( pView );
 }

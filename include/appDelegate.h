@@ -1,14 +1,12 @@
 #ifndef APP_DELEGATE_H
 #define APP_DELEGATE_H
 
-// External
-#include <Metal/Metal.hpp>
-#include <AppKit/AppKit.hpp>
-#include <MetalKit/MetalKit.hpp>
+// Internal
+#include "mtkViewDelegate.h"
 
-class MyAppDelegate : public NS::ApplicationDelegate {
+class AppDelegate : public NS::ApplicationDelegate {
     public:
-        ~MyAppDelegate();
+        ~AppDelegate();
 
         NS::Menu* createMenuBar();
 
@@ -20,7 +18,7 @@ class MyAppDelegate : public NS::ApplicationDelegate {
         NS::Window* _pWindow;
         MTK::View* _pMtkView;
         MTL::Device* _pDevice;
-        MyMTKViewDelegate* _pViewDelegate = nullptr;
+        MTKViewDelegate* _pViewDelegate = nullptr;
 };
 
 #endif

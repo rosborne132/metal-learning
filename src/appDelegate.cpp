@@ -1,13 +1,14 @@
 #include "appDelegate.h"
+#include "mtkViewDelegate.h"
 
-MyAppDelegate::~MyAppDelegate() {
+AppDelegate::~AppDelegate() {
     _pMtkView->release();
     _pWindow->release();
     _pDevice->release();
     delete _pViewDelegate;
 }
 
-NS::Menu* MyAppDelegate::createMenuBar() {
+NS::Menu* AppDelegate::createMenuBar() {
     using NS::StringEncoding::UTF8StringEncoding;
 
     NS::Menu* pMainMenu = NS::Menu::alloc()->init();
@@ -48,14 +49,14 @@ NS::Menu* MyAppDelegate::createMenuBar() {
     return pMainMenu->autorelease();
 }
 
-void MyAppDelegate::applicationWillFinishLaunching( NS::Notification* pNotification ) {
+void AppDelegate::applicationWillFinishLaunching( NS::Notification* pNotification ) {
     NS::Menu* pMenu = createMenuBar();
     NS::Application* pApp = reinterpret_cast< NS::Application* >( pNotification->object() );
     pApp->setMainMenu( pMenu );
     pApp->setActivationPolicy( NS::ActivationPolicy::ActivationPolicyRegular );
 }
 
-void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification ) {
+void AppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification ) {
     CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
 
     _pWindow = NS::Window::alloc()->init(
@@ -70,7 +71,7 @@ void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotificati
     _pMtkView->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
     _pMtkView->setClearColor( MTL::ClearColor::Make( 1.0, 0.0, 0.0, 1.0 ) );
 
-    _pViewDelegate = new MyMTKViewDelegate( _pDevice );
+    _pViewDelegate = new MTKViewDelegate( _pDevice );
     _pMtkView->setDelegate( _pViewDelegate );
 
     _pWindow->setContentView( _pMtkView );
@@ -82,4 +83,6 @@ void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotificati
     pApp->activateIgnoringOtherApps( true );
 }
 
-bool MyAppDelegate::applicationShouldTerminateAfterLastWindowClosed( NS::Application* pSender )
+bool AppDelegate::applicationShouldTerminateAfterLastWindowClosed( NS::Application* pSender ) {
+    return true;
+}
