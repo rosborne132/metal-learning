@@ -1,92 +1,13 @@
-/*
- *
- * Copyright 2022 Apple Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+#include "appDelegate.h"
 
-#include <cassert>
-
-#define NS_PRIVATE_IMPLEMENTATION
-#define MTL_PRIVATE_IMPLEMENTATION
-#define MTK_PRIVATE_IMPLEMENTATION
-#define CA_PRIVATE_IMPLEMENTATION
-
-// External
-#include <Metal/Metal.hpp>
-#include <AppKit/AppKit.hpp>
-#include <MetalKit/MetalKit.hpp>
-
-// Internal
-#include "renderer.h"
-#include "mtkViewDelegate.h"
-
-// TODO: fix package
-// #include "appDelegate.h"
-
-
-#pragma region Declarations {
-
-class MyAppDelegate : public NS::ApplicationDelegate
-{
-    public:
-        ~MyAppDelegate();
-
-        NS::Menu* createMenuBar();
-
-        virtual void applicationWillFinishLaunching( NS::Notification* pNotification ) override;
-        virtual void applicationDidFinishLaunching( NS::Notification* pNotification ) override;
-        virtual bool applicationShouldTerminateAfterLastWindowClosed( NS::Application* pSender ) override;
-
-    private:
-        NS::Window* _pWindow;
-        MTK::View* _pMtkView;
-        MTL::Device* _pDevice;
-        MyMTKViewDelegate* _pViewDelegate = nullptr;
-};
-
-#pragma endregion Declarations }
-
-
-int main( int argc, char* argv[] )
-{
-    NS::AutoreleasePool* pAutoreleasePool = NS::AutoreleasePool::alloc()->init();
-
-    MyAppDelegate delegate;
-
-    NS::Application* pSharedApplication = NS::Application::sharedApplication();
-    pSharedApplication->setDelegate( &delegate );
-    pSharedApplication->run();
-
-    pAutoreleasePool->release();
-
-    return 0;
-}
-
-
-#pragma mark - AppDelegate
-#pragma region AppDelegate {
-
-MyAppDelegate::~MyAppDelegate()
-{
+MyAppDelegate::~MyAppDelegate() {
     _pMtkView->release();
     _pWindow->release();
     _pDevice->release();
     delete _pViewDelegate;
 }
 
-NS::Menu* MyAppDelegate::createMenuBar()
-{
+NS::Menu* MyAppDelegate::createMenuBar() {
     using NS::StringEncoding::UTF8StringEncoding;
 
     NS::Menu* pMainMenu = NS::Menu::alloc()->init();
@@ -127,16 +48,14 @@ NS::Menu* MyAppDelegate::createMenuBar()
     return pMainMenu->autorelease();
 }
 
-void MyAppDelegate::applicationWillFinishLaunching( NS::Notification* pNotification )
-{
+void MyAppDelegate::applicationWillFinishLaunching( NS::Notification* pNotification ) {
     NS::Menu* pMenu = createMenuBar();
     NS::Application* pApp = reinterpret_cast< NS::Application* >( pNotification->object() );
     pApp->setMainMenu( pMenu );
     pApp->setActivationPolicy( NS::ActivationPolicy::ActivationPolicyRegular );
 }
 
-void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification )
-{
+void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification ) {
     CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
 
     _pWindow = NS::Window::alloc()->init(
@@ -164,8 +83,3 @@ void MyAppDelegate::applicationDidFinishLaunching( NS::Notification* pNotificati
 }
 
 bool MyAppDelegate::applicationShouldTerminateAfterLastWindowClosed( NS::Application* pSender )
-{
-    return true;
-}
-
-#pragma endregion AppDelegate }

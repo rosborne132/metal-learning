@@ -13,6 +13,9 @@
 # limitations under the License.
 
 APP_MAIN_OBJECTS=src/main.o
+RENDERER_OBJECTS=src/renderer.o
+APP_DELEGATE_OBJECTS=src/appDelegate.o
+MTK_VIEW_DELEGATE_OBJECTS=src/mtkViewDelegate.o
 
 ifdef DEBUG
 DBG_OPT_FLAGS=-g
@@ -27,7 +30,7 @@ ASAN_FLAGS=
 endif
 
 CC=clang++
-CFLAGS=-Wall -std=c++17 -I./libs/metal-cpp -I./libs/metal-cpp-extensions -fno-objc-arc $(DBG_OPT_FLAGS) $(ASAN_FLAGS)
+CFLAGS=-Wall -std=c++17 -I./include -I./libs/metal-cpp -I./libs/metal-cpp-extensions -fno-objc-arc $(DBG_OPT_FLAGS) $(ASAN_FLAGS)
 LDFLAGS=-framework Metal -framework Foundation -framework Cocoa -framework CoreGraphics -framework MetalKit
 
 VPATH=./libs/metal-cpp
@@ -39,9 +42,9 @@ all: build/main
 
 .PHONY: all
 
-build/main: $(APP_MAIN_OBJECTS) Makefile
-	$(CC) $(CFLAGS) $(LDFLAGS) $(APP_MAIN_OBJECTS) -o $@
+build/main: $(APP_MAIN_OBJECTS) ${RENDERER_OBJECTS} ${MTK_VIEW_DELEGATE_OBJECTS} Makefile
+	$(CC) $(CFLAGS) $(LDFLAGS) src/*.o -o $@
 
 clean:
-	rm -f $(APP_MAIN_OBJECTS) \
+	rm -f src/*.o \
 		build/main

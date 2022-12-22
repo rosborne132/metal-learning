@@ -1,8 +1,7 @@
 #!/bin/bash
 
 echo -n "Running process $1"
-
-cd scripts
+echo
 
 case $1 in
   debug)
